@@ -1,0 +1,21 @@
+# shellcheck shell=sh
+
+scriptdir=$(dirname $0)
+
+. "${scriptdir}/utils.sh"
+
+# The inputs we really need are the 
+# - testing tag (default: #test)
+# - the directory where the tests are contained (default: <this directory>)
+
+tag_for_test="#test"
+dir_for_test="$scriptdir"
+
+tmpdir="$(setup_tmpdir)"
+
+log_info "$dir_for_test"
+log_info "$tmpdir"
+
+find_all_scripts_in_dir "$dir_for_test" \
+    | files_with_tag "$tag_for_test" \
+    | for_each run_all_tests_in_file 
